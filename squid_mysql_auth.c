@@ -4,6 +4,7 @@
  * @author      Jacques Marneweck <jacques@php.net>
  * @copyright   2004-2006 Jacques Marneweck
  * @version     $Id$
+ * @license     The MIT License http://www.opensource.org/licenses/mit-license.php
  * @link        http://www.ataris.co.za/projects/squid_mysql_auth/
  * @see         http://dev.mysql.com/doc/mysql/en/C.html
  */
