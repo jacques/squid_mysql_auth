@@ -21,10 +21,11 @@ MYSQL mysql, *connection = NULL;
 MYSQL_RES *result;
 MYSQL_ROW row;
 
-static char* host = "192.168.0.140";
-static char* database = "database";
-static char* db_user = "user";
-static char* db_pass = "password";
+static FILE *fh = NULL;
+static char host[BUFSIZE];
+static char database[BUFSIZE];
+static char db_user[BUFSIZE];
+static char db_pass[BUFSIZE];
 
 /**
  * currently doing jack with command line options.
@@ -38,6 +39,18 @@ int main (int argc, char **argv) {
     char query[BUFSIZE];
     char my_user[BUFSIZE];
     char my_pass[BUFSIZE];
+
+    fh = fopen("/usr/local/etc/squid_mysql_auth.conf", "r");
+    if (!fh) {
+        (void) printf ("Cannot read the configuration file.");
+        exit(1);
+    }
+
+    fscanf(fh, "%s", &host);
+    fscanf(fh, "%s", &database);
+    fscanf(fh, "%s", &db_user);
+    fscanf(fh, "%s", &db_pass);
+    fclose(fh);
 
     setvbuf(stdout, NULL, _IOLBF, 0);
 
