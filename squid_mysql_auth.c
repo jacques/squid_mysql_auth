@@ -2,7 +2,7 @@
  * Squid MySQL Authentication
  * 
  * @author      Jacques Marneweck <jacques@php.net>
- * @copyright   2004-2006 Jacques Marneweck
+ * @copyright   2003-2006 Jacques Marneweck
  * @version     $Id$
  * @license     The MIT License http://www.opensource.org/licenses/mit-license.php
  * @link        http://www.ataris.co.za/projects/squid_mysql_auth/
