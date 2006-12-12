@@ -5,7 +5,7 @@
 # $Id$
 
 build:
-	gcc -O3 -o mysql_auth squid_mysql_auth.c -I/usr/local/include/mysql -L/usr/local/lib/mysql -lmysqlclient
+	gcc -O3 -o mysql_auth squid_mysql_auth.c -I/usr/local/include/mysql -L/usr/local/lib/mysql -lmysqlclient -lcrypto
 
 install:
 	install -S -o root -g squid -m 0550 mysql_auth /usr/local/libexec/squid/

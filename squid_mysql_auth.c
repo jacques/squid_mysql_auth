@@ -14,7 +14,7 @@
 #include <string.h>
 #include <mysql.h>
 
-#include <pwd.h>
+#include <openssl/md5.h>
 
 #define	BUFSIZE	256
 
@@ -32,7 +32,6 @@ static char db_pass[BUFSIZE];
  * currently doing jack with command line options.
  */
 int main (int argc, char **argv) {
-    struct passwd *pwd;
     char buf[BUFSIZE];
     char *s = {0};
     char *user = {0};
@@ -104,7 +103,7 @@ int main (int argc, char **argv) {
         (void) mysql_escape_string (my_user, user, strlen(user));
         (void) mysql_escape_string (my_pass, pass, strlen(pass));
 
-        sprintf(query, "SELECT password FROM users WHERE md5(username)=md5('%s') LIMIT 1", my_user);
+        sprintf(query, "SELECT md5(password) FROM users WHERE md5(username)=md5('%s') LIMIT 1", my_user);
         
         if (mysql_query (connection, query)) {
             fprintf (stderr, mysql_error(&mysql));
@@ -130,9 +129,21 @@ int main (int argc, char **argv) {
     return 0;
 }
 
-int check_password (char *passwd, char *enc_passwd)
+int check_password (char *enc_passwd, char *passwd)
 {
-    return (!strcmp(passwd, enc_passwd));
+    unsigned char hash[16];
+    char hashhex[33];
+    MD5_CTX ctx;
+    int i;
+
+    MD5_Init(&ctx);
+    MD5_Update(&ctx, passwd, strlen(passwd));
+    MD5_Final(hash, &ctx);
+    for (i = 0;  i < 16;  i++)
+        sprintf(hashhex+2*i, "%02x", hash[i]);
+    hashhex[32]=0;
+
+    return (!strcmp(hashhex, enc_passwd));
 }
 
 /* vim: set noet ts=4 sw=4 ft=c: : */
